@@ -1,6 +1,8 @@
 # HorsemanCMS
 CMS System focusing on performance & scalability, security and user experience.
 
+HorsemanCMS is especially suited for creating corporate websites and wikis.
+
 *Key focus*
 * Don't try to do everything. Just include functionality that 80% of all websites need, and do it extremely well!
 
