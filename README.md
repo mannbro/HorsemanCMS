@@ -18,5 +18,7 @@ CMS System focusing on performance & scalability, security and user experience.
 * Roles (Writer, Publisher)
 * Auto publish changes at a certain time
 * "Browse in the future"
+* Themes
+* Language support
 * Plugins / modules / components - pages and blocks can be other things than CMS content (PHP/JS Applications)
 * Full Text Search (Elastic, Solr or something)
