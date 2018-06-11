@@ -55,7 +55,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis.
   * Contact form
   * Blog
 * Full Text Search (Elastic, Solr or something)
-* E-Commerce
+* E-Commerce (Horseman eCommerce co-development)
   * Product Listing
   * Product Detail
   * Checkout
