@@ -36,6 +36,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis.
     * Embed Images
     * Upload Images
     * Embedded YouTube (in progress)
+    * Save as / load template
     * Clean up UI/UX
   * Metadata (title, description etc)
   * Authentication
