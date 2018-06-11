@@ -25,6 +25,13 @@ HorsemanCMS is especially suited for creating corporate websites and wikis.
     * ~~Copy & paste etc~~
     * ~~Saving~~
     * Linking (in progress)
+    * Containers and blocks on pages
+      * Make containers, not page itself, editable
+      * Possibility to set container as type
+        * Basic containers
+        * Slideshow
+        * 12-column grid
+        * Blocks (reusable content)
     * Fetch old versions
     * Embed Images
     * Upload Images
