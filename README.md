@@ -29,6 +29,16 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
       * ~~Make containers, not page itself, editable~~
       * Possibility to set container as type
         * ~~Basic containers~~
+        * Refactor / change terminology of hierarchy
+          * ContentWrapper
+            * Toolbar
+            * Content (one html file)
+              * SectionWrapper (container)
+                * SectionToolbar
+                * Section
+                * UnitWrapper
+                  * Editor
+                  * Unit    
         * Possibility to have more than one content per container
         * Slideshow
         * 12-column grid    
