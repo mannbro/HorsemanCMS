@@ -26,7 +26,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
     * ~~Saving~~
     * Linking (in progress)
     * Containers and blocks on pages
-      * Make containers, not page itself, editable
+      * ~~Make containers, not page itself, editable~~
       * Possibility to set container as type
         * Basic containers
         * Slideshow
@@ -38,6 +38,9 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
     * Embedded YouTube (in progress)
     * Save as / load template
     * Clean up UI/UX
+    * Properl dirty handling
+    * Visually show that content is dirty
+    * Only save if content is dirty
   * Metadata (title, description etc)
   * Authentication
   * ~~Edit blocks with WYSIWYG~~
