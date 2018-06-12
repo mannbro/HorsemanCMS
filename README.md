@@ -36,9 +36,9 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
               * SectionWrapper (container)
                 * SectionToolbar
                 * Section
-                * UnitWrapper
+                * ArticleWrapper
                   * Editor
-                  * Unit    
+                  * Article    
         * Possibility to have more than one content per container
         * Slideshow
         * 12-column grid    
