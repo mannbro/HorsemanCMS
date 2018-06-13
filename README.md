@@ -54,7 +54,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
   * Edit base template
   * Edit CSS
   * Edit JS
-* AJAX Loading (when changing pages, only load main content and update menu status etc)
+* ~~AJAX Loading (when changing pages, only load main content and update menu status etc)~~
 * Roles (Writer, Publisher)
 * Auto publish changes at a certain time
 * "Browse in the future"
