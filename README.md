@@ -31,8 +31,10 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
       * Possibility to set container as type
         * ~~Basic containers~~
         * ~~Possibility to have more than one article per content~~
-        * Possibility to add new article
-        * Possibility to resort articles within container
+        * ~~Possibility to add new articles~~
+        * ~~Possibility to add new sections~~
+        * Possibility to resort articles within section
+        * Possibility to resort sections within content
         * Slideshow
         * 12-column grid    
       * Set content as block (reusable content)
