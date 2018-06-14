@@ -1,0 +1,58 @@
+.horseman-content {outline: 1px solid #CCCCCC;}
+.horseman-content.dirty {outline: 1px solid #CC0000;}
+.horseman-section {outline: 1px solid #CCCCCC;}
+.horseman-article {outline: 1px solid #CCCCCC;}
+
+.hideoutlines .horseman-content, .hideoutlines .horseman-section, .hideoutlines .horseman-article {
+	outline: none;
+}
+
+.toolbar {
+	height=25px;
+	width: 100%;
+	min-width: 100px;
+	background-color: #cccccc;
+	position: fixed;
+	left:0px;
+	bottom: 0px;
+	z-index: 10000;
+}
+.toolbar button {
+	border: none;
+	background-color: transparent;
+}
+.toolbar-sourceeditor {
+	display: none;
+	height: calc(100vh - 25px);
+}
+.toolbar-sourceeditor textarea.sourcecode {
+	height: calc(100vh - 50px);
+	width: 100%;
+}
+
+.toolbar.sourceeditoropen .toolbar-sourceeditor {
+	display: block;
+}
+
+.toolbar.sourceeditoropen {
+	height: 100%;
+}
+
+.toolbar-onlyshowwhendirty {
+	display: none;
+}
+.toolbar.dirty .toolbar-onlyshowwhendirty {
+	display: block;
+}
+.toolbar-onlyshowwhenbound {
+	display: none;
+}
+.toolbar.bound .toolbar-onlyshowwhenbound {
+	display: block;
+}
+
+.editor-menu-group {
+	display: inline-block;
+	margin-left: 1px solid black;
+	margin-right: 1px solid black;
+}

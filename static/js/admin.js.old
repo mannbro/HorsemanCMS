@@ -1,0 +1,173 @@
+document.addEventListener("DOMContentLoaded", function() {
+	app.admin.init();
+});
+
+var app = app || {};
+
+app.admin = (function () {
+	function init() {
+		var contentWrappers = document.getElementsByClassName('contentwrapper');
+		for (let i = 0; i < contentWrappers.length; i++) {
+			contentWrappers[i].querySelector(':scope > .content').addEventListener("click", function(event) {
+				createEditor(this, event);
+			});
+
+		}
+	}
+	function createEditor(contentDom, event) {
+		if(contentDom.getAttribute('contenteditable')!='true') {
+			var contentWrapper=contentDom.parentNode;
+			var myEditor= new app.admin.Editor(contentWrapper)
+		}
+	}
+
+	return{init:init};
+}());
+
+app.admin.Editor = function (contentWrapper) {
+		if(!contentWrapper)
+			return;
+
+		this.type=contentWrapper.dataset.type;
+		this.filename=contentWrapper.dataset.filename;
+
+		var contentDom=contentWrapper.getElementsByClassName('content')[0];
+		contentDom.setAttribute('contenteditable', 'true');
+
+		var editorDom=document.createElement('div');
+		editorDom.classList.add('editor')
+
+		editorDom.innerHTML= `
+			<button data-function="save">Save</button>
+			<button data-function="bold">B</button>
+			<button data-function="italic">I</button>
+			<button data-function="underline">U</button>
+			<button data-function="strikeThrough">S</button>
+			<button data-function="subscript">Sub</button>
+			<button data-function="superscript">Sup</button>
+
+			<button data-function="undo">&lt;</button>
+			<button data-function="redo">&gt;</button>
+
+			<button data-function="justifyCenter">Center</button>
+			<button data-function="justifyFull">Full</button>
+			<button data-function="justifyLeft">Left</button>
+			<button data-function="justifyRight">Right</button>
+
+			<button data-function="removeFormat">Unformat</button>
+
+			<button data-function="copy">Copy</button>
+			<button data-function="cut">Cut</button>
+			<button data-function="paste">Paste</button>
+
+			<button data-function="openSourceEditor">Source</button>
+			<div class="editor-menu-group">
+				<input type="text" id="editor-menu-linkurl">
+				<button data-function="createLink">Link</button>
+			</div>
+
+			<button data-function="closeEditor">X</button>
+
+		`;
+		contentWrapper.appendChild(editorDom);
+
+		editorDom.addEventListener('click', function(event) {
+			if(event.target.nodeName=='BUTTON'&&event.target.dataset.hasOwnProperty('function')) {
+				var func = event.target.dataset.function; 
+
+				if(typeof(event.currentTarget.editor[func])==='function') {
+					//Call the specified function in Editor
+					event.currentTarget.editor[event.target.dataset.function]();
+				} else {
+					//So we don't have to create functions for simple execCommand() commands, we default to this
+					//TODO: perhaps we need to support other common simple tasks that we don't want to create functions for. If so, we'll add a data tag to determine the "handler"
+					document.execCommand(func);
+				}
+			}
+		});
+
+
+		contentDom.editor=this;
+		editorDom.editor=this;
+
+		this.editorDom=editorDom;
+		this.contentDom=contentDom;
+		this.contentWrapper=contentWrapper;
+};
+app.admin.Editor.prototype.closeEditor = function(innerHTML) {
+	this.contentDom.contentEditable=false;
+
+	//remove all references to enable GC
+	this.contentDom.editor=null;
+	this.contentWrapper.editor=null;
+	this.editorDom.editor=null;
+
+	this.editorDom.remove();
+
+}
+
+
+app.admin.Editor.prototype.createEditPopup = function(innerHTML) {
+	var popupDom=document.createElement('div');
+	popupDom.setAttribute('id', 'editor-popup')
+	popupDom.innerHTML=innerHTML;
+	popupDom.editor = this;
+	document.getElementsByTagName('body')[0].appendChild(popupDom);
+	return popupDom;
+}
+
+app.admin.Editor.prototype.closeEditPopup = function(innerHTML) {
+	document.getElementById('editor-popup').remove();
+}
+
+app.admin.Editor.prototype.save = function() {
+	fetch('/admin/api/pages.php', {
+		body: JSON.stringify({
+			"type": this.type,
+			"filename": this.filename,
+			"content": this.contentDom.innerHTML
+		}),
+		method: 'post',
+		headers: {"Content-type": "application/json"}
+	});
+	console.log('save');
+}
+
+app.admin.Editor.prototype.paste = function() {
+	if(!document.execCommand('paste')) {
+		alert('Due to security reasons, you need to press '+(window.navigator.platform=='MacIntel'?'CMD':'CTRL')+' + V to paste.')
+	}
+}
+app.admin.Editor.prototype.createLink = function() {
+	var href=this.editorDom.querySelector('#editor-menu-linkurl').value;
+	if(!href) {
+		alert('Enter an ULR in the field before trying to create a link.');
+		return;
+	}
+	console.log(document.execCommand('createLink', false, href));
+}
+
+
+app.admin.Editor.prototype.openSourceEditor = function() {
+	if(!!document.getElementById('editor-popup'))
+		return;
+	var innerHTML = `
+		<textarea id="editor-source-editor">${this.contentDom.innerHTML}</textarea>
+		<button data-function="ok">OK</button>
+		<button data-function="cancel">Cancel</button>
+	`;
+	var popupDom = this.createEditPopup(innerHTML);
+	popupDom.addEventListener('click', function(event) {
+		if(event.target.nodeName=='BUTTON'&&event.target.dataset.hasOwnProperty('function')) {
+			var func=event.target.dataset.function;
+			if(func=='ok') {
+				this.editor.contentDom.innerHTML=this.querySelector('#editor-source-editor').value;
+				this.editor.closeEditPopup();
+			}
+			if(func=='cancel') {
+				this.editor.closeEditPopup();
+			}
+			console.log(event.target);
+		}
+	});
+}
