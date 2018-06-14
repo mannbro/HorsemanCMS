@@ -51,27 +51,61 @@ horsemanCMS.router = (function () {
 	function loadPageContents(href) {
 		fetch('/admin/api/pages.php'+href)
 			.then(function(response) {
-				return response.text();
-			}).then(function(pageFileContents) {
-				pageFileContentsArray=pageFileContents.split('----------');
-
-				if(pageFileContentsArray.length<2) {
-					var metadata = null;
-					var metadataJSON = '';
-					var contents = pageFileContents;
+				if(response.ok) {
+					return response.text();
 				} else {
-					var metadataJSON = pageFileContentsArray[0].replace('\n', '').replace('\r', '');
-					var metadata = JSON.parse(metadataJSON);
-					var contents = pageFileContentsArray[1];
+					console.log('404');
 				}
-
-				document.getElementsByTagName('main')[0].innerHTML='<div class="horseman-content" data-type="page" data-filename="'+(href.charAt(0)=='/'?href.substr(1):href)+'" data-metadata=\''+metadataJSON+'\'>'+contents+'</div>';
+			}).then(function(pageFileContents) {
+				console.log('updatePage');
+				if(!!pageFileContents) {
+					updatePage(pageFileContents, href);
+				} else {
+					//TODO: Fetch actual 404 page
+					updatePage('<h1>404</h1>', href);
+				}
 			});
+	}
+
+	function updatePage(pageFileContents, href) {
+		pageFileContentsArray=pageFileContents.split('----------');
+
+		if(pageFileContentsArray.length<2) {
+			var metadata = null;
+			var metadataJSON = '';
+			var contents = pageFileContents;
+		} else {
+			var metadataJSON = pageFileContentsArray[0].replace('\n', '').replace('\r', '');
+			var metadata = JSON.parse(metadataJSON);
+			var contents = pageFileContentsArray[1];
+			checkIfRedirect(metadata);
+		}
+
+		//TODO: Set header data (title, meta description)
+		document.getElementsByTagName('main')[0].innerHTML='<div class="horseman-content" data-type="page" data-filename="'+(href.charAt(0)=='/'?href.substr(1):href)+'" data-metadata=\''+metadataJSON+'\'>'+contents+'</div>';
+	}
+
+	function checkIfRedirect(metadata) {
+		if(metadata.hasOwnProperty('redirect301')) {
+			var redirectURL = metadata['redirect301'];
+		} else if(metadata.hasOwnProperty('redirect302')) {
+			var redirectURL = metadata['redirect301'];
+		} else {
+			return;
+		}
+		if(redirectURL.charAt(0)==='/') {
+			navigateTo(redirectURL);
+		} else {
+			document.location.href=redirectURL;
+		}
 	}
 
 	return{
 		init:init,
-		linkClicked:linkClicked
+		navigateTo:navigateTo,
+		updatePage:updatePage,
+		linkClicked:linkClicked,
+		checkIfRedirect:checkIfRedirect
 	};
 }());
 

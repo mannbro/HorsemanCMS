@@ -42,8 +42,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if(substr($fullPath, -1)=='/')
 		$fullPath.='index.html';
 
-	//TODO: 404 handling
-	echo loadContent($fullPath);
+	//TODO: better 404 handling
+	$content=loadContent($fullPath);
+	if($content=='') {
+		header("HTTP/1.0 404 Not Found");
+	} else {
+		echo $content;
+	}
 } else {
 	echo 'not implemented';
 }
