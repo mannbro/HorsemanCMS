@@ -38,16 +38,19 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
         * Slideshow
         * 12-column grid    
       * Set content as block (reusable content)
+    * Add page when navigating to 404
     * Fetch old versions
     * Embed Images
     * Upload Images
     * Embedded YouTube (in progress)
     * Save as / load template
     * Clean up UI/UX
-    * Properl dirty handling
-    * Visually show that content is dirty
-    * Only save if content is dirty
-  * Metadata (title, description etc)
+    * Setup build chain (webpack or similar) to be able to separate JS-files in a cleaner way
+    * Proper dirty handling
+      * Visually show that content is dirty
+      * ~~Only save if content is dirty~~
+  * ~~Metadata (title, description etc)~~
+  * Redirects (301, 302)
   * Authentication
   * ~~Edit blocks with WYSIWYG~~
   * Edit menus

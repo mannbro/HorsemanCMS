@@ -236,20 +236,19 @@ horsemanCMS.admin.editor = (function () {
 			body: JSON.stringify({
 				"type": content.dataset.type,
 				"filename": content.dataset.filename,
-				"content": content.innerHTML
+				"content": content.dataset.metadata+'\n----------\n'+content.innerHTML
 			}),
 			method: 'post',
 			headers: {"Content-type": "application/json"}
 		});
 		console.log('savePage');
-
 	}
 	function saveBlock(content) {
 		fetch('/admin/api/blocks.php', {
 			body: JSON.stringify({
 				"type": content.dataset.type,
 				"filename": content.dataset.filename,
-				"content": content.innerHTML
+				"content": content.dataset.metadata+'\n----------\n'+content.innerHTML
 			}),
 			method: 'post',
 			headers: {"Content-type": "application/json"}
@@ -284,7 +283,6 @@ horsemanCMS.admin.editor = (function () {
 			}
 		}
 	}
-
 
 	return {
 		init:init, 

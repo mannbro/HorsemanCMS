@@ -7,48 +7,86 @@ if(isset($_GET['page']))
 if(!$page)
 	$page='index.html';
 
+echo renderPage($page);
 
-echo render('decorator', $page);
-
-function render($type, $filename) {
+function renderPage($filename) {
 	$filename=sanitizeFilename($filename);
 
-	switch ($type) {
-		case 'decorator':
-			$fullPath = ROOT_PATH.'content/decorator.html';
-			break;
-		case 'page':
-			$fullPath = ROOT_PATH.'content/pages/'.$filename;
-			break;
-		case 'block':
-			$fullPath = ROOT_PATH.'content/blocks/'.$filename;
-			break;
+	$decorator = file_get_contents(ROOT_PATH.'content/decorator.html');
+
+	$pageFileContents = file_get_contents(ROOT_PATH.'content/pages/'.$filename);
+	$pageFileContentsArray = explode('----------', $pageFileContents);
+
+	if(count($pageFileContentsArray)<2) {
+		$metadata = NULL;
+		$metadataJSON = '';
+		$contents = $pageFileContents;
+
+	} else {
+		$metadataJSON = preg_replace( "/\r|\n/", "", $pageFileContentsArray[0]);
+
+		$metadata = json_decode($metadataJSON);
+
+		$contents = $pageFileContentsArray[1];
 	}
 
-	$contents = file_get_contents($fullPath);
+	$page = str_replace('<!--#MAINCONTENT#-->', '<div class="horseman-content" data-type="page" data-filename="'.$filename.'" data-metadata=\''.$metadataJSON .'\'>'.$contents.'</div>', $decorator);
+	$page = str_replace('<!--#HEADCONTENT#-->', renderHead($metadata), $page);
+
 	$regex = '<!--#(.+?)#-->';
-	preg_match_all($regex, $contents, $matches);
+	preg_match_all($regex, $page, $matches);
 
-	if($type=='decorator') {
-		//TODO: Check if logged in as admin
-		$contents=str_replace('<body', '<body data-admin="true"', $contents);
-	} else if($type=='page') {
-		//TODO: figure a way to set page title, description etc..
-		//TODO: actually fetch 404 contents if available
-		if($contents=='') {
-			$contents='404 Not Found';
-			header("HTTP/1.0 404 Not Found");
-		}
-	}
 	foreach ($matches[1] as $match) {
-		if($match=='MAINCONTENT') {
-			$contents=str_replace('<!--#'.$match.'#-->', '<div class="horseman-content" data-type="page" data-filename="'.$filename.'">'.render('page', $filename).'</div>', $contents);
-		}
-		else {
-			$contents=str_replace('<!--#'.$match.'#-->', '<div class="horseman-content" data-type="block" data-filename="'.$match.'">'.render('block', $match).'</div>', $contents);
-		}
+		$page=str_replace('<!--#'.$match.'#-->', renderBlock($match), $page);
 	}
-	return $contents;
+	return $page;
+}
+
+
+function renderBlock($filename) {
+	$filename=sanitizeFilename($filename);
+
+	$blockFileContents = file_get_contents(ROOT_PATH.'content/blocks/'.$filename);
+	$blockFileContentsArray = explode('----------', $blockFileContents);
+
+	if(count($blockFileContentsArray)<2) {
+		$metadata = NULL;
+		$metadataJSON = '';
+		$block = $blockFileContents;
+
+	} else {
+		$metadataJSON = preg_replace( "/\r|\n/", "", $blockFileContentsArray[0]);
+		$metadata = json_decode($metadataJSON);
+
+		$block = $blockFileContentsArray[1];
+	}
+
+
+	$regex = '<!--#(.+?)#-->';
+	preg_match_all($regex, $block, $matches);
+
+	foreach ($matches[1] as $match) {
+		$block=str_replace('<!--#'.$match.'#-->', renderBlock('block', $match), $block);
+	}
+	return '<div class="horseman-content" data-type="block" data-filename="'.$filename.'" data-metadata=\''.$metadataJSON .'\'>'.$block.'</div>';
+
+}
+
+function renderHead($metadata) {
+	$headcontent = '';
+	if(!$metadata)
+		return $headcontent;
+
+	if(array_key_exists('title', $metadata)) {
+		$headcontent.='<title>'.$metadata->title.'</title>';
+	}
+	if(array_key_exists('metaDescription', $metadata)) {
+		$headcontent.='<meta name="description" content="'.$metadata->metaDescription.'">';
+	}
+	if(array_key_exists('metaKeywords', $metadata)) {
+		$headcontent.='<meta name="keywords" content="'.$metadata->metaDescription.'">';
+	}
+	return $headcontent;
 }
 
 function sanitizeFilename($filename) {

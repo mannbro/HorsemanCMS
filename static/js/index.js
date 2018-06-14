@@ -52,8 +52,20 @@ horsemanCMS.router = (function () {
 		fetch('/admin/api/pages.php'+href)
 			.then(function(response) {
 				return response.text();
-			}).then(function(text) {
-				document.getElementsByTagName('main')[0].innerHTML=text; 
+			}).then(function(pageFileContents) {
+				pageFileContentsArray=pageFileContents.split('----------');
+
+				if(pageFileContentsArray.length<2) {
+					var metadata = null;
+					var metadataJSON = '';
+					var contents = pageFileContents;
+				} else {
+					var metadataJSON = pageFileContentsArray[0].replace('\n', '').replace('\r', '');
+					var metadata = JSON.parse(metadataJSON);
+					var contents = pageFileContentsArray[1];
+				}
+
+				document.getElementsByTagName('main')[0].innerHTML='<div class="horseman-content" data-type="page" data-filename="'+(href.charAt(0)=='/'?href.substr(1):href)+'" data-metadata=\''+metadataJSON+'\'>'+contents+'</div>';
 			});
 	}
 
