@@ -4,13 +4,13 @@ CMS System focusing on performance & scalability, security and user experience.
 HorsemanCMS is especially suited for creating corporate websites and wikis. It is also co-developed with Horseman eCommerce, so that it will be possible to use as an eCommerce platform.
 
 *Key focus*
-* Don't try to do everything. Just include functionality that 80% of all websites need, and do it extremely well!
+* Don't try to be everything. Focus on what 80% of all websites need and do it extremely well and user friendly!
 
 *Key USP:s*
 * User-friendly inline true WYSIWYG editing
 * Versioning / revert
-* Pure PHP, no database needed
-* Vanilla Javascript, no framework needed
+* Pure PHP; no database and very few dependencies needed
+* Vanilla Javascript; no framework needed
 * Extremely scalable and fast due to no database, vanilla JS, light-weight templates and following best practices
 * Mobile-first responsive
 
@@ -45,12 +45,14 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
     * Embedded YouTube (in progress)
     * Save as / load template
     * Clean up UI/UX
-    * Setup build chain (webpack or similar) to be able to separate JS-files in a cleaner way
     * Proper dirty handling
       * Visually show that content is dirty
       * ~~Only save if content is dirty~~
   * ~~Metadata (title, description etc)~~
-  * Redirects (301, 302)
+  * ~~Cache control~~
+  * ~~Redirects (301, 302)~~
+  * Setup build chain (webpack or similar) to be able to separate JS-files in a cleaner way
+  * Ensure that it's possible to upgrade without overwriting content, custom styles, templates etc
   * Authentication
   * ~~Edit blocks with WYSIWYG~~
   * Edit menus

@@ -28,6 +28,8 @@ function renderPage($filename) {
 		$metadata = json_decode($metadataJSON);
 
 		$contents = $pageFileContentsArray[1];
+
+		checkIfRedirect($metadata);
 	}
 
 	$page = str_replace('<!--#MAINCONTENT#-->', '<div class="horseman-content" data-type="page" data-filename="'.$filename.'" data-metadata=\''.$metadataJSON .'\'>'.$contents.'</div>', $decorator);
@@ -89,10 +91,43 @@ function renderHead($metadata) {
 	return $headcontent;
 }
 
+function checkIfRedirect($metadata) {
+	if(array_key_exists('redirect301', $metadata)) {
+		$redirectURL = $metadata->redirect301;
+		$redirectType='301 Moved Permanently';
+	} else if(array_key_exists('redirect302', $metadata)) {
+		$redirectURL = $metadata->redirect302;
+		$redirectType='302 Found';
+	} else {
+		return;
+	}
+	if(substr($redirectUrl, 0, 1)=='/') {
+		$redirectURL=getProtocolAndHost().redirectURL;
+	}
+
+	header('HTTP/1.1 '.$redirectType);
+	header('Location: '.$redirectURL);
+	exit('');
+}
+
+
+
 function sanitizeFilename($filename) {
 	//TODO: Implement better sanitizing
 	$filename=str_replace('..', '', $filename);
 	return $filename;
 }
 
+function getProtocolAndHost()
+{
+	$currentURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
+	$currentURL .= $_SERVER["SERVER_NAME"];
+
+	if($_SERVER["SERVER_PORT"] != "80" && $_SERVER["SERVER_PORT"] != "443")
+	{
+		$currentURL .= ":".$_SERVER["SERVER_PORT"];
+	}
+
+	return $currentURL;
+}
 ?>

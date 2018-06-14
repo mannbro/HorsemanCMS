@@ -213,7 +213,7 @@ horsemanCMS.admin.editor = (function () {
 		if(!horsemanCMS.admin.editor.dirty)
 			return;
 
-		unbindToolbar();
+		this.unbindToolbar();
 
 		var contentDirtys = document.querySelectorAll('.horseman-content.dirty')
 
