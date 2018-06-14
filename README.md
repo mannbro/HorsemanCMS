@@ -38,7 +38,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
         * Slideshow
         * 12-column grid    
       * Set content as block (reusable content)
-    * Add page when navigating to 404
+    * ~~Add page when navigating to 404~~
     * Fetch old versions
     * Embed Images
     * Upload Images

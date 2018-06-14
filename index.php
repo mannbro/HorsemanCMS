@@ -24,13 +24,19 @@ function renderPage($filename) {
 
 	} else {
 		$metadataJSON = preg_replace( "/\r|\n/", "", $pageFileContentsArray[0]);
-
 		$metadata = json_decode($metadataJSON);
-
 		$contents = $pageFileContentsArray[1];
-
 		checkIfRedirect($metadata);
 	}
+	if($contents=='') {
+		$contents = file_get_contents(ROOT_PATH.'content/error/404.html');
+		if($contents=='') {
+			//Fallback
+			$contents='404 Not Found';
+		}
+		header("HTTP/1.0 404 Not Found");
+	}
+
 
 	$page = str_replace('<!--#MAINCONTENT#-->', '<div class="horseman-content" data-type="page" data-filename="'.$filename.'" data-metadata=\''.$metadataJSON .'\'>'.$contents.'</div>', $decorator);
 	$page = str_replace('<!--#HEADCONTENT#-->', renderHead($metadata), $page);
