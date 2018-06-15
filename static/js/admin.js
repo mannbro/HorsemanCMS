@@ -52,15 +52,15 @@ horsemanCMS.admin.editor = (function () {
 		toolbar.classList.add('toolbar');
 
 		toolbar.innerHTML= `
-			<div class="toolbar-sourceeditor">
-				<textarea class="sourcecode"></textarea>
-				<button data-function="sourceEditOk">OK</button>
-				<button data-function="sourceEditCancel">Cancel</button>
-			</div>
-			<div class='toolbar-onlyshowwhendirty'>
-				<button data-function="save">Save</button>
-			</div>
-			<div class='toolbar-onlyshowwhenbound'>
+			<button class="toggleHide fas fa-bars" data-function="toggleHide"></button>
+			<h1>Editor</h1>
+			<div class='toolbar-currentarticle'>
+				<h2>Current article</h2>
+				<div class="toolbar-sourceeditor">
+					<textarea class="sourcecode"></textarea>
+					<button data-function="sourceEditOk">OK</button>
+					<button data-function="sourceEditCancel">Cancel</button>
+				</div>
 				<button data-function="bold">B</button>
 				<button data-function="italic">I</button>
 				<button data-function="underline">U</button>
@@ -86,9 +86,15 @@ horsemanCMS.admin.editor = (function () {
 				<button data-function="addArticle">Add Article</button>
 
 				<button data-function="sourceEditorOpen">Source</button>
-				<div class="editor-menu-group">
-					<input type="text" id="editor-menu-linkurl">
-					<button data-function="createLink">Link</button>
+				<button data-function="createLink">Link</button>
+			</div>
+			<div class='toolbar-currentsection'>
+				<h2>Current section</h2>
+			</div>
+			<div class='toolbar-currentcontent'>
+				<h2>Current content area</h2>
+				<div class='toolbar-onlyshowwhendirty'>
+					<button data-function="save">Save</button>
 				</div>
 			</div>
 			<button data-function="toggleOutlines">Toggle Outlines</button>
@@ -136,6 +142,15 @@ horsemanCMS.admin.editor = (function () {
 				horsemanCMS.admin.editor.unbindToolbar();
 			});
 */
+	}
+
+	function toggleHide() {
+		var toolbar = document.getElementsByClassName('toolbar')[0];
+		if(toolbar.classList.contains('hidden')) {
+			toolbar.classList.remove('hidden');
+		} else {
+			toolbar.classList.add('hidden');
+		}
 	}
 
 	function setDirty(article) {
@@ -296,6 +311,7 @@ horsemanCMS.admin.editor = (function () {
 		dirty:dirty,
 		selection:selection,
 		setDirty:setDirty,
+		toggleHide:toggleHide,
 		bindToolbar:bindToolbar,
 		unbindToolbar:unbindToolbar,
 		bindEvents:bindEvents,
