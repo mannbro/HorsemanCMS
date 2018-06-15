@@ -8,10 +8,23 @@ var horsemanCMS = (function () {
 		if(!!horsemanCMS.router&&typeof(horsemanCMS.router)=='object') {
 			horsemanCMS.router.init();
 		}
+		if(isAdminEnabled) {
+			loadAdmin();
+		}
 	}
+	function isAdminEnabled() {
+		return document.location.search=='?admin';
+	}
+        function loadAdmin() {
+                var head  = document.getElementsByTagName('head')[0];
+                var elem  = document.createElement('script');
+                elem.src = '/static/js/admin.js';
+                head.appendChild(elem);
+        }
 
 	return{
-		init:init
+		init:init,
+		isAdminEnabled:isAdminEnabled
 	};
 }());
 

@@ -1,7 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-	horsemanCMS.admin.init();
-});
-
 var horsemanCMS = horsemanCMS || {};
 
 horsemanCMS.admin = (function () {
@@ -315,3 +311,5 @@ horsemanCMS.admin.editor = (function () {
 		restoreSelection:restoreSelection
 	};
 }());
+
+horsemanCMS.admin.init();
