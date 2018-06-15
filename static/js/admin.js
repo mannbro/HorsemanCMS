@@ -118,6 +118,10 @@ horsemanCMS.admin.editor = (function () {
 				}
 			}
 		});
+		document.querySelector('.toolbar .sourcecode').addEventListener("input", function(event) {
+				this.dirty=true;
+		});
+
 		var articles = document.querySelectorAll('article.horseman-article');
 		for (let i = 0; i < articles.length; i++) {
 			this.bindArticleEvents(articles[i]);
@@ -197,11 +201,17 @@ horsemanCMS.admin.editor = (function () {
 	}
 
 	function sourceEditorOpen() {
-		document.querySelector('.toolbar .sourcecode').value = this.activeEditableArticle.innerHTML;
+		var editor = document.querySelector('.toolbar .sourcecode');
+		editor.value = this.activeEditableArticle.innerHTML;
+		editor.dirty=false;
 		document.getElementsByClassName('toolbar')[0].classList.add('sourceeditoropen');
 	}
 	function sourceEditOk() {
-		this.activeEditableArticle.innerHTML=document.querySelector('.toolbar .sourcecode').value;
+		var editor = document.querySelector('.toolbar .sourcecode');
+		if(editor.dirty) {
+			this.activeEditableArticle.innerHTML=editor.value;
+			horsemanCMS.admin.editor.setDirty(this.activeEditableArticle);
+		}
 		document.getElementsByClassName('toolbar')[0].classList.remove('sourceeditoropen');
 	}
 	function sourceEditCancel() {
