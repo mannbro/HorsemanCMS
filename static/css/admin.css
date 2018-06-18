@@ -18,6 +18,7 @@
 	border-bottom-left-radius: 8px;
 	border-top-left-radius: 8px;
 	padding: 10px;
+	transition: left 0.5s ease-in-out, width 0.5s ease-in-out;
 }
 .toolbar.hidden {
 	left: 100%;
@@ -48,6 +49,7 @@
 	top: 10px;
 	width: calc(100% - 20px);
 	height: calc(100% - 20px);
+	transition: display 0.5s;
 }
 .toolbar-sourceeditor textarea.sourcecode {
 	height: calc(100% - 50px);
@@ -56,6 +58,7 @@
 
 .toolbar.sourceeditoropen .toolbar-sourceeditor {
 	display: block;
+	transition: display 1s;
 }
 
 .toolbar.sourceeditoropen {

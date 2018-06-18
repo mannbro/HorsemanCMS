@@ -53,7 +53,7 @@ horsemanCMS.admin.editor = (function () {
 
 		toolbar.innerHTML= `
 			<button class="toggleHide fas fa-bars" data-function="toggleHide"></button>
-			<h1>Editor</h1>
+			<h1>Admin</h1>
 			<div class='toolbar-currentarticle'>
 				<h2>Current article</h2>
 				<div class="toolbar-sourceeditor">
