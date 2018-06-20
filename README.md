@@ -42,6 +42,8 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
     * Fetch old versions
     * Embed Images (in progress)
     * Upload Images
+    * Set/change image width and height
+    * Universal lazyload for all uploaded images
     * Embedded YouTube (in progress)
     * Save as / load template
     * Clean up UI/UX

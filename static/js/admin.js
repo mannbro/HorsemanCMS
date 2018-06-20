@@ -284,7 +284,8 @@ horsemanCMS.admin.editor = (function () {
 				var selected = document.querySelector('.image-editor .images .selected');
 				if(!!selected) {
 					restoreSelection();
-					document.execCommand('insertImage', false, selected.src);
+					var html = `<img src="${selected.src}" width="${selected.naturalWidth}" height="${selected.naturalHeight}">`;
+					document.execCommand('insertHTML', false, html);
 				}
 				console.log(event);
 			}
