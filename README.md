@@ -24,7 +24,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
     * ~~Bold, Italics and other basic styling~~
     * ~~Copy & paste etc~~
     * ~~Saving~~
-    * Linking (in progress)
+    * ~~Linking (in progress)~~
     * Containers and blocks on pages
       * ~~Make containers, not page itself, editable~~
       * ~~Refactor / change terminology of hierarchy~~
@@ -40,7 +40,7 @@ HorsemanCMS is especially suited for creating corporate websites and wikis. It i
       * Set content as block (reusable content)
     * ~~Add page when navigating to 404~~
     * Fetch old versions
-    * Embed Images
+    * Embed Images (in progress)
     * Upload Images
     * Embedded YouTube (in progress)
     * Save as / load template

@@ -115,3 +115,16 @@
 	right: 5px;
 }
 
+.image-editor .images {
+	overflow-y: auto;
+	height: 250px;
+}
+
+.image-editor .images img {
+	max-width: 30%;
+	margin: 1.5%
+}
+
+.image-editor .images img.selected {
+	outline: 3px solid #0000CC;
+}

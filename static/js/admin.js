@@ -61,6 +61,7 @@ horsemanCMS.admin.editor = (function () {
 					<button data-function="sourceEditOk">OK</button>
 					<button data-function="sourceEditCancel">Cancel</button>
 				</div>
+				<button data-function="imageEditorOpen">IMG</button>
 				<button data-function="bold">B</button>
 				<button data-function="italic">I</button>
 				<button data-function="underline">U</button>
@@ -267,6 +268,54 @@ horsemanCMS.admin.editor = (function () {
 			});
 
 	}
+	function imageEditorOpen() {
+		var imageEditor=document.createElement('div');
+		imageEditor.classList.add('image-editor');
+		imageEditor.innerHTML= `
+			<div class="images"></div>
+			<div class="image-upload"></div>
+			<button class="ok">OK</button>
+			<button class="cancel">Cancel</button>
+		`;
+		var imageEditorLightbox = horsemanCMS.admin.editor.createLightbox(imageEditor);
+		var selection=storeSelection();
+		imageEditorLightbox.addEventListener("click", function(event) {
+			if(event.target.classList.contains('ok')) {
+				var selected = document.querySelector('.image-editor .images .selected');
+				if(!!selected) {
+					restoreSelection();
+					document.execCommand('insertImage', false, selected.src);
+				}
+				console.log(event);
+			}
+		});
+
+		fetch('/admin/api/medias.php')
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(medias) {
+				console.log(medias);
+				var imgs = '';
+				for(var i=0;i<medias.length;i++) {
+					imgs = imgs + '<img src="/content/media/'+medias[i].filename+'">';
+				}
+				var imgsContainer = document.querySelector('.image-editor .images');
+				imgsContainer.innerHTML=imgs;
+				imgsContainer.addEventListener('click', function(event) {
+					var siblings=event.target.parentNode.childNodes;
+					for(var i=0;i<siblings.length;i++) {
+						if(siblings[i]==event.target) {
+							siblings[i].classList.add('selected');
+						} else {
+							siblings[i].classList.remove('selected');
+						}
+					}
+
+					console.log(event.target);
+				});
+			});
+	}
 
 	function save() {
 
@@ -384,6 +433,7 @@ horsemanCMS.admin.editor = (function () {
 		sourceEditOk:sourceEditOk,
 		sourceEditCancel:sourceEditCancel,
 		linkEditorOpen:linkEditorOpen,
+		imageEditorOpen:imageEditorOpen,
 		save:save,
 		storeSelection:storeSelection,
 		restoreSelection:restoreSelection,
