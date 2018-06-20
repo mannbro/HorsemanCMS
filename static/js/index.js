@@ -8,7 +8,7 @@ var horsemanCMS = (function () {
 		if(!!horsemanCMS.router&&typeof(horsemanCMS.router)=='object') {
 			horsemanCMS.router.init();
 		}
-		if(isAdminEnabled) {
+		if(isAdminEnabled()) {
 			loadAdmin();
 		}
 	}

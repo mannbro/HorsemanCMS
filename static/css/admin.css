@@ -84,3 +84,34 @@
 	margin-left: 1px solid black;
 	margin-right: 1px solid black;
 }
+
+.lightbox-wrapper {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: rgba(0,0,0,0.85);
+}
+
+.lightbox {
+	width: 400px;
+	height: 300px;
+	padding: 10px;
+	padding-top: 20px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	top: 0px;
+	margin: auto;
+	background-color: #CCCCCC;
+	position: absolute;
+	border-radius: 8px;
+}
+
+.lightbox-close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+

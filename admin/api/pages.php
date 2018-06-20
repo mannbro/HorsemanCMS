@@ -22,6 +22,19 @@ function loadContent($fullPath) {
 	return $contents;
 }
 
+function getTitle($contents) {
+	$array = explode('----------', $contents);
+	if(count($array)<2)
+		return '';
+
+	$json = json_decode( preg_replace( "/\r|\n/", "", $array[0]), true);
+	if(!!$json&&!!$json['title'])
+		return $json['title'];
+
+	return '';
+}
+
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	//TODO: Authentication
 	$json = file_get_contents('php://input');
@@ -50,6 +63,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		echo $content;
 	}
 } else {
-	echo 'not implemented';
+	header('Content-Type: application/json');
+	$fullPath = ROOT_PATH.'content/pages/';
+
+	$files = scandir($fullPath);
+
+	$json='[';
+
+	$first = true;
+
+	foreach ($files as $key => $value)
+	{
+		if (!in_array($value,array(".",".."))&!is_dir($fullPath . DIRECTORY_SEPARATOR . $value)&&substr($value, -5, 5)=='.html')
+		{
+			if(!$first)
+				$json.=', ';
+			$first=false;
+			if($value=='index.html')
+				$filename='/';
+			else
+				$filename='/'.$value;
+
+			$title=getTitle(loadContent($fullPath.$value));
+			if($title=='')
+				$title=$value;
+			$json.='{"filename": "'.$filename.'", "title": "'.$title.'"}';
+		}
+	}
+	$json.=']';
+	echo $json;
+
 }
 ?>

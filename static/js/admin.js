@@ -86,7 +86,7 @@ horsemanCMS.admin.editor = (function () {
 				<button data-function="addArticle">Add Article</button>
 
 				<button data-function="sourceEditorOpen">Source</button>
-				<button data-function="createLink">Link</button>
+				<button data-function="linkEditorOpen">Link</button>
 			</div>
 			<div class='toolbar-currentsection'>
 				<h2>Current section</h2>
@@ -229,6 +229,45 @@ horsemanCMS.admin.editor = (function () {
 		document.getElementsByClassName('toolbar')[0].classList.remove('sourceeditoropen');
 	}
 
+	function linkEditorOpen() {
+		var linkEditor=document.createElement('div');
+		linkEditor.classList.add('link-editor');
+		linkEditor.innerHTML= `
+			<select name="pages"></select><br>
+			<input type="text" name="href"></input>
+			<button class="ok">OK</button>
+			<button class="cancel">Cancel</button>
+		`;
+		var linkEditorLightbox = horsemanCMS.admin.editor.createLightbox(linkEditor);
+		var selection=storeSelection();
+		linkEditorLightbox.addEventListener("click", function(event) {
+			if(event.target.classList.contains('ok')) {
+				var href=this.querySelector('[name=href]').value;
+				restoreSelection();
+				document.execCommand('createLink', false, href);
+			}
+		});
+
+		fetch('/admin/api/pages.php')
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(pages) {
+				console.log(pages);
+				var options = '<option value="">Select... </option>';
+				for(var i=0;i<pages.length;i++) {
+					options = options + '<option value="'+pages[i].filename+'">'+pages[i].filename+' - '+pages[i].title+'</option>';
+				}
+				var selectElem = document.querySelector('.link-editor select[name=pages]');
+				selectElem.innerHTML=options;
+				selectElem.addEventListener('change', function(event) {
+					document.querySelector('.link-editor [name=href]').value=this.value;
+					console.log(event);
+				});
+			});
+
+	}
+
 	function save() {
 
 		if(!horsemanCMS.admin.editor.dirty)
@@ -305,6 +344,28 @@ horsemanCMS.admin.editor = (function () {
 		}
 	}
 
+	function createLightbox(domElement) {
+		var lightboxWrapper=document.createElement('div');
+		lightboxWrapper.classList.add('lightbox-wrapper');
+		lightboxWrapper.innerHTML=`
+			<div class="lightbox">
+				<div class="lightbox-close fas fa-times-circle"></div>
+				<div class="lightbox-contents"></div>
+			</div>
+		`;
+		lightboxWrapper.querySelector('.lightbox-contents').appendChild(domElement);
+
+		lightboxWrapper.addEventListener("click", function(event) {
+			if(event.target.classList.contains('lightbox-close')||event.target.classList.contains('cancel')||event.target==this)
+				this.remove();
+		});
+
+		document.body.appendChild(lightboxWrapper);
+		return lightboxWrapper;
+
+	}
+
+
 	return {
 		init:init, 
 		activeEditableArticle:activeEditableArticle,
@@ -322,9 +383,11 @@ horsemanCMS.admin.editor = (function () {
 		sourceEditorOpen:sourceEditorOpen,
 		sourceEditOk:sourceEditOk,
 		sourceEditCancel:sourceEditCancel,
+		linkEditorOpen:linkEditorOpen,
 		save:save,
 		storeSelection:storeSelection,
-		restoreSelection:restoreSelection
+		restoreSelection:restoreSelection,
+		createLightbox:createLightbox
 	};
 }());
 
