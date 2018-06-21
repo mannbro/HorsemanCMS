@@ -4,3 +4,39 @@
 .content-section {
 	position: relative;
 }
+
+.columns:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.c-1of2,
+.c-2of2,
+
+.c-1of3,
+.c-2of3,
+.c-3of3,
+
+.c-1of4,
+.c-2of4,
+.c-3of4,
+.c-4of4,
+
+.c-1of12,
+.c-2of12,
+.c-3of12,
+.c-4of12,
+.c-5of12,
+.c-6of12,
+.c-7of12,
+.c-8of12,
+.c-9of12,
+.c-10of12,
+.c-11of12,
+.c-12of12 {
+	float: left;
+	width: 100%;
+	outline: 1px solid black;
+}
+
